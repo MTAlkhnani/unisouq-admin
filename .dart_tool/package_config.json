@@ -123,9 +123,9 @@
     },
     {
       "name": "flutter_lints",
-      "rootUri": "file:///Users/mohammedalkhnani/.pub-cache/hosted/pub.dev/flutter_lints-2.0.3",
+      "rootUri": "file:///Users/mohammedalkhnani/.pub-cache/hosted/pub.dev/flutter_lints-3.0.1",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.0"
     },
     {
       "name": "flutter_localizations",
@@ -177,7 +177,7 @@
     },
     {
       "name": "lints",
-      "rootUri": "file:///Users/mohammedalkhnani/.pub-cache/hosted/pub.dev/lints-2.1.1",
+      "rootUri": "file:///Users/mohammedalkhnani/.pub-cache/hosted/pub.dev/lints-3.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -278,7 +278,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-03-24T20:41:39.039845Z",
+  "generated": "2024-03-24T21:24:14.684105Z",
   "generator": "pub",
   "generatorVersion": "3.2.6"
 }

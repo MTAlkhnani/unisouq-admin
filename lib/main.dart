@@ -13,14 +13,14 @@ void main() async {
   // Initialize Firebase
   await Firebase.initializeApp(
       options: const FirebaseOptions(
-          apiKey: "AIzaSyCz7XWBdkHsqqkTiOVZMISQ0antQrM-8WE",
-          authDomain: "uni-souq.firebaseapp.com",
-          projectId: "uni-souq",
-          storageBucket: "uni-souq.appspot.com",
-          messagingSenderId: "1091791953567",
-          appId: "1:1091791953567:web:963d4240c1e2a20cc94caa",
-          measurementId: "G-84R8B45G72"));
-
+    apiKey: "AIzaSyCz7XWBdkHsqqkTiOVZMISQ0antQrM-8WE",
+    // authDomain: "uni-souq.firebaseapp.com",
+    projectId: "uni-souq",
+    // storageBucket: "uni-souq.appspot.com",
+    messagingSenderId: "1091791953567",
+    appId: "1:1091791953567:web:963d4240c1e2a20cc94caa",
+    // measurementId: "G-84R8B45G72",
+  ));
   runApp(const MyApp());
 }
 
