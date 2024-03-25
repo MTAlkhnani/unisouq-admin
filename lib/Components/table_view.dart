@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../screens/package_page.dart';
+import '../screens/item_page.dart';
 
 class TableView extends StatelessWidget {
   final Stream<QuerySnapshot<Object?>>? stream;
@@ -37,6 +37,7 @@ class TableView extends StatelessWidget {
 
                   final packageWidget = DataRow(cells: [
                     DataCell(Text(sellerID.toString())),
+                    DataCell(Text(itemName)),
                     DataCell(Text(category)),
                     DataCell(Text(status
                         // style: TextStyle(color: statusColor),
@@ -61,17 +62,32 @@ class TableView extends StatelessWidget {
                 }
               }
               itemWidgets;
-              return DataTable(
-                headingRowColor: MaterialStateProperty.resolveWith(
-                    (states) => Colors.grey.shade200),
-                columns: const [
-                  DataColumn(label: Text("ID")),
-                  DataColumn(label: Text("Category")),
-                  DataColumn(label: Text("Status")),
-                  DataColumn(label: Text("Seller Email")),
-                  DataColumn(label: Text("")),
-                ],
-                rows: itemWidgets,
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minWidth: constraints
+                            .maxWidth, // Ensures the minimum width is the screen width
+                      ),
+                      child: DataTable(
+                        headingRowColor: MaterialStateProperty.resolveWith(
+                            (states) => Colors.grey.shade200),
+                        columns: const [
+                          DataColumn(label: Text("Seller ID")),
+                          DataColumn(label: Text("Item Name")),
+                          DataColumn(label: Text("Category")),
+                          DataColumn(label: Text("Status")),
+                          DataColumn(label: Text("Seller Email")),
+                          DataColumn(label: Text("")),
+                        ],
+                        rows:
+                            itemWidgets, // Make sure 'itemWidgets' is properly defined and filled with DataRow objects
+                      ),
+                    ),
+                  );
+                },
               );
             })),
         const SizedBox(

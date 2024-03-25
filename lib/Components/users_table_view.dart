@@ -33,20 +33,31 @@ class UserWidget extends StatelessWidget {
                 }
               }
               userWidgets;
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  headingRowColor: MaterialStateProperty.resolveWith(
-                      (states) => Colors.grey.shade200),
-                  columns: const [
-                    DataColumn(label: Text("User ID")),
-                    DataColumn(label: Text("First Name")),
-                    DataColumn(label: Text("Last Name")),
-                    DataColumn(label: Text("Email")),
-                    DataColumn(label: Text("Phone")),
-                  ],
-                  rows: userWidgets,
-                ),
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    scrollDirection:
+                        Axis.horizontal, // Enable horizontal scrolling
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                          minWidth: constraints
+                              .maxWidth), // Ensure it spans the min screen width
+                      child: DataTable(
+                        headingRowColor: MaterialStateProperty.resolveWith(
+                            (states) => Colors.grey.shade200),
+                        columns: const [
+                          DataColumn(label: Text("User ID")),
+                          DataColumn(label: Text("First Name")),
+                          DataColumn(label: Text("Last Name")),
+                          DataColumn(label: Text("Email")),
+                          DataColumn(label: Text("Phone")),
+                        ],
+                        rows:
+                            userWidgets, // Ensure your 'userWidgets' list is filled with DataRow objects.
+                      ),
+                    ),
+                  );
+                },
               );
             })),
         //Now let's set the pagination
