@@ -1,66 +1,76 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TypesBtwDates extends StatefulWidget {
-  const TypesBtwDates({super.key});
+  const TypesBtwDates({Key? key}) : super(key: key);
 
   @override
   State<TypesBtwDates> createState() => _TypesBtwDatesState();
 }
 
 class _TypesBtwDatesState extends State<TypesBtwDates> {
-  int _regularsCount = 0;
-  int _fragilesCount = 0;
-  int _liquidsCount = 0;
-  int _chemicalsCount = 0;
+  int _home = 0;
+  int _electronics = 0;
+  int _clothing = 0;
+  int _books = 0;
+  int _furniture = 0;
 
-  void basedOnTypesAndTwoDates(int firstDate, int secondDate) async {
-    Timestamp firstStamp = Timestamp.fromMicrosecondsSinceEpoch(firstDate);
-    Timestamp secondStamp = Timestamp.fromMicrosecondsSinceEpoch(secondDate);
+  Stream<QuerySnapshot>? getStreamAllItems() {
+    return FirebaseFirestore.instance.collection('Item').snapshots();
+  }
 
+  void basedOnTypes(int firstDate, int secondDate) async {
     final instance = FirebaseFirestore.instance;
+    final itemCollection = instance.collection('Item');
 
-    var packagesbtw = instance
-        .collection('packages')
-        .where('ArrivalDate', isGreaterThan: firstStamp)
-        .where('ArrivalDate', isLessThan: secondStamp);
+    final itemSnapshot = await itemCollection.get();
 
-    await packagesbtw.get().then((packages) {
-      if (packages.docs.isEmpty) {
-        setState(() {
-          _regularsCount = 0;
-          _fragilesCount = 0;
-          _liquidsCount = 0;
-          _chemicalsCount = 0;
-        });
-
-        return;
-      }
-      var regulars = [];
-      var fragiles = [];
-      var liquids = [];
-      var chemicals = [];
-
-      for (var package in packages.docs) {
-        if (package.get("Type") == "Regular") {
-          regulars.add(package);
-        }
-        if (package.get("Type") == "Fragile") {
-          fragiles.add(package);
-        }
-        if (package.get("Type") == "Liquid") {
-          liquids.add(package);
-        }
-        if (package.get("Type") == "Chemical") {
-          chemicals.add(package);
-        }
-      }
+    if (itemSnapshot.docs.isEmpty) {
       setState(() {
-        _regularsCount = regulars.length;
-        _fragilesCount = fragiles.length;
-        _liquidsCount = liquids.length;
-        _chemicalsCount = chemicals.length;
+        _home = 0;
+        _electronics = 0;
+        _clothing = 0;
+        _books = 0;
+        _furniture = 0;
       });
+      return;
+    }
+
+    int homeCount = 0;
+    int electronicsCount = 0;
+    int clothingCount = 0;
+    int booksCount = 0;
+    int furnitureCount = 0;
+
+    for (var itemDoc in itemSnapshot.docs) {
+      final category = itemDoc.get('category');
+      switch (category) {
+        case 'Home':
+          homeCount++;
+          break;
+        case 'Electronics':
+          electronicsCount++;
+          break;
+        case 'Clothing':
+          clothingCount++;
+          break;
+        case 'Books':
+          booksCount++;
+          break;
+        case 'Furniture':
+          furnitureCount++;
+          break;
+        default:
+          break;
+      }
+    }
+
+    setState(() {
+      _home = homeCount;
+      _electronics = electronicsCount;
+      _clothing = clothingCount;
+      _books = booksCount;
+      _furniture = furnitureCount;
     });
   }
 
@@ -74,12 +84,9 @@ class _TypesBtwDatesState extends State<TypesBtwDates> {
     );
 
     if (result != null) {
-      // Rebuild the UI
       setState(() {
-        result.start.microsecondsSinceEpoch;
-        basedOnTypesAndTwoDates(result.start.microsecondsSinceEpoch,
+        basedOnTypes(result.start.microsecondsSinceEpoch,
             result.end.microsecondsSinceEpoch);
-        //_selectedDateRange = result;
       });
     }
   }
@@ -96,7 +103,7 @@ class _TypesBtwDatesState extends State<TypesBtwDates> {
               children: [
                 Column(
                   children: [
-                    const Text("Number of package types between two dates."),
+                    const Text("Number of category types between two dates."),
                     IconButton(
                         onPressed: _show, icon: const Icon(Icons.date_range))
                   ],
@@ -104,11 +111,11 @@ class _TypesBtwDatesState extends State<TypesBtwDates> {
                 const Spacer(),
                 Column(
                   children: [
-                    const Text("Regular"),
+                    const Text("Home"),
                     const SizedBox(
                       height: 15,
                     ),
-                    Text('$_regularsCount'),
+                    Text('$_home'),
                   ],
                 ),
                 const SizedBox(
@@ -116,11 +123,11 @@ class _TypesBtwDatesState extends State<TypesBtwDates> {
                 ),
                 Column(
                   children: [
-                    const Text("Fragile"),
+                    const Text("Electronics"),
                     const SizedBox(
                       height: 15,
                     ),
-                    Text('$_fragilesCount'),
+                    Text('$_electronics'),
                   ],
                 ),
                 const SizedBox(
@@ -128,11 +135,11 @@ class _TypesBtwDatesState extends State<TypesBtwDates> {
                 ),
                 Column(
                   children: [
-                    const Text("Liquid"),
+                    const Text("Clothing"),
                     const SizedBox(
                       height: 15,
                     ),
-                    Text('$_liquidsCount'),
+                    Text('$_clothing'),
                   ],
                 ),
                 const SizedBox(
@@ -140,11 +147,23 @@ class _TypesBtwDatesState extends State<TypesBtwDates> {
                 ),
                 Column(
                   children: [
-                    const Text("Chemical"),
+                    const Text("Books"),
                     const SizedBox(
                       height: 15,
                     ),
-                    Text('$_chemicalsCount'),
+                    Text('$_books'),
+                  ],
+                ),
+                const SizedBox(
+                  width: 80,
+                ),
+                Column(
+                  children: [
+                    const Text("Furniture"),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text('$_furniture'),
                   ],
                 ),
                 const SizedBox(
