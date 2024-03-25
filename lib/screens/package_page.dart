@@ -5,10 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import '../Components/in_transit_path.dart';
 
-class PackagePage extends StatelessWidget {
-  PackagePage({super.key, required this.packageID, required this.status});
-  int packageID;
-  final String status;
+class ItemPage extends StatelessWidget {
+  ItemPage({super.key, required this.itemID});
+  String itemID;
+
   final _firestore = FirebaseFirestore.instance;
   final _locatedAtController = TextEditingController();
   Future openDialog(BuildContext context) => showDialog(
@@ -24,40 +24,40 @@ class PackagePage extends StatelessWidget {
                 TextButton(
                   onPressed: () async {
                     await FirebaseFirestore.instance
-                        .collection('packages')
-                        .where('PackageID', isEqualTo: packageID)
+                        .collection('Item')
+                        .where('itemID', isEqualTo: itemID)
                         .get()
                         .then((value) {
                       if (value.docs.isNotEmpty) {
-                        final newLocationAt =
-                            value.docs.first.get('Destination');
-                        final id = value.docs.first.id;
+                        // final newLocationAt =
+                        //     value.docs.first.get('Destination');
+                        // final id = value.docs.first.id;
 
-                        _firestore.collection('packages').doc(id).update({
-                          'LocatedAt': newLocationAt,
-                          'Destination': _locatedAtController.text.trim()
-                        });
+                        // _firestore.collection('packages').doc(id).update({
+                        //   'LocatedAt': newLocationAt,
+                        //   'Destination': _locatedAtController.text.trim()
+                        // });
 
-                        _firestore
-                            .collection('Location History')
-                            .where('PackageID', isEqualTo: packageID)
-                            .where('Status', isEqualTo: "In")
-                            .get()
-                            .then((history) {
-                          _firestore
-                              .collection('Location History')
-                              .doc(history.docs.first.id)
-                              .update({
-                            'Status': "Out",
-                          });
-                          _firestore.collection('Location History').add({
-                            'PackageID': packageID,
-                            'Location': newLocationAt,
-                            'LocatedNumber':
-                                history.docs.first.get('LocatedNumber') + 1,
-                            'Status': 'In',
-                          });
-                        });
+                        // _firestore
+                        //     .collection('Location History')
+                        //     .where('PackageID', isEqualTo: packageID)
+                        //     .where('Status', isEqualTo: "In")
+                        //     .get()
+                        //     .then((history) {
+                        //   _firestore
+                        //       .collection('Location History')
+                        //       .doc(history.docs.first.id)
+                        //       .update({
+                        //     'Status': "Out",
+                        //   });
+                        //   _firestore.collection('Location History').add({
+                        //     'PackageID': packageID,
+                        //     'Location': newLocationAt,
+                        //     'LocatedNumber':
+                        //         history.docs.first.get('LocatedNumber') + 1,
+                        //     'Status': 'In',
+                        //   });
+                        // });
 
                         //.update({}).;
                       }
@@ -71,40 +71,40 @@ class PackagePage extends StatelessWidget {
                 TextButton(
                     onPressed: () async {
                       await _firestore
-                          .collection('packages')
-                          .where('PackageID', isEqualTo: packageID)
+                          .collection('Item')
+                          .where('itemID', isEqualTo: itemID)
                           .get()
                           .then((value) {
                         if (value.docs.isNotEmpty) {
                           final id = value.docs.first.id;
                           FirebaseFirestore.instance
-                              .collection('packages')
+                              .collection('Item')
                               .doc(id)
                               .delete();
 
-                          _firestore
-                              .collection('Location History')
-                              .where('PackageID', isEqualTo: packageID)
-                              .get()
-                              .then((history) {
-                            history.docs.forEach((element) {
-                              element.reference.delete();
-                            });
-                          });
+                          // _firestore
+                          //     .collection('Location History')
+                          //     .where('PackageID', isEqualTo: packageID)
+                          //     .get()
+                          //     .then((history) {
+                          //   history.docs.forEach((element) {
+                          //     element.reference.delete();
+                          //   });
+                          // });
 
-                          FirebaseFirestore.instance
-                              .collection("Payments")
-                              .where('PackageID', isEqualTo: packageID)
-                              .where('Status', isEqualTo: 'Incompleted')
-                              .get()
-                              .then((payments) {
-                            if (payments.docs.isNotEmpty) {
-                              FirebaseFirestore.instance
-                                  .collection("Payments")
-                                  .doc(payments.docs.first.id)
-                                  .delete();
-                            }
-                          });
+                          // FirebaseFirestore.instance
+                          //     .collection("Payments")
+                          //     .where('PackageID', isEqualTo: packageID)
+                          //     .where('Status', isEqualTo: 'Incompleted')
+                          //     .get()
+                          //     .then((payments) {
+                          //   if (payments.docs.isNotEmpty) {
+                          //     FirebaseFirestore.instance
+                          //         .collection("Payments")
+                          //         .doc(payments.docs.first.id)
+                          //         .delete();
+                          //   }
+                          // });
                         }
                       });
                       Navigator.pop(context);
@@ -118,34 +118,34 @@ class PackagePage extends StatelessWidget {
               ],
             )),
       );
-  Future sendEmail({
-    required String name,
-    required String email,
-    required String id,
-    required String status,
-  }) async {
-    final serviceId = 'service_ktkrkvd';
-    final templateId = 'template_trprxb2';
-    final userId = 'MZ6rv3LfKqF9jDjp5';
-    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({
-        'service_id': serviceId,
-        'template_id': templateId,
-        'user_id': userId,
-        'template_params': {
-          'user_name': name,
-          'user_email': email,
-          'status': status,
-          'id': id,
-        }
-      }),
-    );
-  }
+  // Future sendEmail({
+  //   required String name,
+  //   required String email,
+  //   required String id,
+  //   required String status,
+  // }) async {
+  //   final serviceId = 'service_ktkrkvd';
+  //   final templateId = 'template_trprxb2';
+  //   final userId = 'MZ6rv3LfKqF9jDjp5';
+  //   final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+  //   final response = await http.post(
+  //     url,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: json.encode({
+  //       'service_id': serviceId,
+  //       'template_id': templateId,
+  //       'user_id': userId,
+  //       'template_params': {
+  //         'user_name': name,
+  //         'user_email': email,
+  //         'status': status,
+  //         'id': id,
+  //       }
+  //     }),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -167,145 +167,128 @@ class PackagePage extends StatelessWidget {
               Center(
                 child: StreamBuilder<QuerySnapshot>(
                     stream: _firestore
-                        .collection('packages')
-                        .where('PackageID', isEqualTo: packageID)
+                        .collection('Item')
+                        .where('itemID', isEqualTo: itemID)
                         .snapshots(),
                     builder: ((context, snapshot) {
-                      List<DataRow> packageWidgets = [];
+                      List<DataRow> itemWidgets = [];
                       if (snapshot.hasData) {
-                        final packages = snapshot.data!.docs;
-                        for (var package in packages) {
-                          final packageID = package.get('PackageID');
-                          final type = package.get('Type');
-                          final status = package.get('Status');
-                          final fdd = package.get('FDD');
-                          final currDest = package.get('Destination');
-                          final locatedAt = package.get('LocatedAt').toString();
-                          final cost = package.get('Cost').toString();
-                          final insurance = package.get('Insurance').toString();
-                          final dim = package.get('Dimension').toString();
-                          final weight = package.get('Weight').toString();
-                          Color statusColor = Colors.black;
-                          if (status.toString().toLowerCase() == 'received') {
-                            statusColor = const Color.fromRGBO(0, 100, 0, 1);
-                          } else if (status.toString().toLowerCase() ==
-                              'intransit') {
-                            statusColor = Colors.blue;
-                          } else if (status.toString().toLowerCase() ==
-                              'delayed') {
-                            statusColor = Colors.orange;
-                          } else if (status.toString().toLowerCase() ==
-                              'lost') {
-                            statusColor = Colors.red;
-                          } else if (status.toString().toLowerCase() ==
-                              'processing') {
-                            statusColor = Colors.green;
-                          } else if (status.toString().toLowerCase() ==
-                              'delivered') {
-                            statusColor = Colors.green;
-                          }
+                        final items = snapshot.data!.docs;
+                        for (var item in items) {
+                          final sellerID = item.get('sellerID');
+                          final itemID = item.get('itemID');
+                          final category = item.get('category');
+                          final status = item.get('status');
+                          final user = item.get('user');
+                          final itemName = item.get('title');
+                          final price = item.get('price');
+                          final condition = item.get('condition');
+                          final desc = item.get('description');
+                          final discPrice = item.get('discountedPrice');
+                          final imageUrls = item.get('imageURLs');
                           final packageWidget = DataRow(cells: [
-                            DataCell(Text(packageID.toString())),
-                            DataCell(Text(type)),
-                            DataCell(Text(
-                              status,
-                              style: TextStyle(color: statusColor),
-                            )),
-                            DataCell(Text(fdd)),
-                            DataCell(Text(currDest)),
-                            DataCell(Text(locatedAt)),
-                            DataCell(Text(cost)),
-                            DataCell(Text(insurance)),
-                            DataCell(Text(dim)),
-                            DataCell(Text(weight)),
+                            DataCell(Text(itemID.toString())),
+                            DataCell(Text(sellerID)),
+                            DataCell(Text(status)),
+                            DataCell(Text(category)),
+                            DataCell(Text(user)),
+                            DataCell(Text(itemName)),
+                            DataCell(Text(price)),
+                            DataCell(Text(discPrice)),
+                            DataCell(Text(condition)),
+                            DataCell(Text(desc)),
                             DataCell(
                               TextButton(
-                                child: const Text("Edit"),
+                                child: const Text("Delete Item"),
                                 onPressed: () {
                                   openDialog(context);
                                 },
                               ),
                             ),
                           ]);
-                          packageWidgets.add(packageWidget);
+                          itemWidgets.add(packageWidget);
                         }
                       }
-                      packageWidgets;
-                      return DataTable(
-                        headingRowColor: MaterialStateProperty.resolveWith(
-                            (states) => Colors.grey.shade200),
-                        columns: const [
-                          DataColumn(label: Text("ID")),
-                          DataColumn(label: Text("Type")),
-                          DataColumn(label: Text("Status")),
-                          DataColumn(label: Text("Final Destination")),
-                          DataColumn(label: Text("Current Destination")),
-                          DataColumn(label: Text("Located At")),
-                          DataColumn(label: Text("Cost")),
-                          DataColumn(label: Text("Insurance")),
-                          DataColumn(label: Text("Dimension")),
-                          DataColumn(label: Text("Weight")),
-                          DataColumn(label: Text("")),
-                        ],
-                        rows: packageWidgets,
+                      itemWidgets;
+                      return SingleChildScrollView(
+                        scrollDirection:
+                            Axis.horizontal, // Enable horizontal scrolling
+                        child: DataTable(
+                          headingRowColor: MaterialStateProperty.resolveWith(
+                              (states) => Colors.grey.shade200),
+                          columns: const [
+                            DataColumn(label: Text("Item ID")),
+                            DataColumn(label: Text("Seller ID")),
+                            DataColumn(label: Text("Status")),
+                            DataColumn(label: Text("Category")),
+                            DataColumn(label: Text("Seller Email")),
+                            DataColumn(label: Text("Item Name")),
+                            DataColumn(label: Text("Price")),
+                            DataColumn(label: Text("Discounted Price")),
+                            DataColumn(label: Text("Condition")),
+                            DataColumn(label: Text("Description")),
+                            DataColumn(label: Text("")),
+                          ],
+                          rows: itemWidgets,
+                        ),
                       );
                     })),
               ),
-              Center(
-                child: ElevatedButton(
-                    onPressed: () async {
-                      var status = '';
-                      var packageIDD = '';
-                      var email = '';
-                      var name = '';
+              // Center(
+              //   child: ElevatedButton(
+              //       onPressed: () async {
+              //         var status = '';
+              //         var packageIDD = '';
+              //         var email = '';
+              //         var name = '';
 
-                      await _firestore
-                          .collection('packages')
-                          .where('PackageID', isEqualTo: packageID)
-                          .get()
-                          .then((value) {
-                        if (value.docs.isNotEmpty) {
-                          final id = value.docs.first.id;
-                          FirebaseFirestore.instance
-                              .collection('packages')
-                              .doc(id)
-                              .get()
-                              .then((value) {
-                            status = value.get("Status");
-                            packageIDD = value.get("PackageID").toString();
-                            email = value.get('CustomerEmail');
-                          });
-                        }
-                      });
-                      await _firestore
-                          .collection('Customer')
-                          .where('Email', isEqualTo: email.toLowerCase())
-                          .get()
-                          .then((value) {
-                        if (value.docs.isNotEmpty) {
-                          final id = value.docs.first.id;
-                          FirebaseFirestore.instance
-                              .collection('Customer')
-                              .doc(id)
-                              .get()
-                              .then((value) {
-                            name = value.get('CustomerName');
-                          });
-                        }
-                      });
-                      sendEmail(
-                          name: name,
-                          email: email,
-                          id: packageIDD,
-                          status: status);
-                    },
-                    child: const Text('Notify User')),
-              ),
+              //         await _firestore
+              //             .collection('packages')
+              //             .where('PackageID', isEqualTo: packageID)
+              //             .get()
+              //             .then((value) {
+              //           if (value.docs.isNotEmpty) {
+              //             final id = value.docs.first.id;
+              //             FirebaseFirestore.instance
+              //                 .collection('packages')
+              //                 .doc(id)
+              //                 .get()
+              //                 .then((value) {
+              //               status = value.get("Status");
+              //               packageIDD = value.get("PackageID").toString();
+              //               email = value.get('CustomerEmail');
+              //             });
+              //           }
+              //         });
+              //         await _firestore
+              //             .collection('Customer')
+              //             .where('Email', isEqualTo: email.toLowerCase())
+              //             .get()
+              //             .then((value) {
+              //           if (value.docs.isNotEmpty) {
+              //             final id = value.docs.first.id;
+              //             FirebaseFirestore.instance
+              //                 .collection('Customer')
+              //                 .doc(id)
+              //                 .get()
+              //                 .then((value) {
+              //               name = value.get('CustomerName');
+              //             });
+              //           }
+              //         });
+              //         sendEmail(
+              //             name: name,
+              //             email: email,
+              //             id: packageIDD,
+              //             status: status);
+              //       },
+              //       child: const Text('Notify User')),
+              // ),
               //Now let's set the pagination
               const SizedBox(
                 height: 40.0,
               ),
-              InTransitPath(packageID: packageID, status: status),
+              // InTransitPath(packageID: packageID, status: status),
             ],
           ),
         ),

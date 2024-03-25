@@ -37,7 +37,7 @@ class TableView extends StatelessWidget {
 
                   final packageWidget = DataRow(cells: [
                     DataCell(Text(sellerID.toString())),
-                    DataCell(Text(condition)),
+                    DataCell(Text(category)),
                     DataCell(Text(status
                         // style: TextStyle(color: statusColor),
                         )),
@@ -49,9 +49,8 @@ class TableView extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => PackagePage(
-                                      packageID: itemID,
-                                      status: status,
+                                builder: (context) => ItemPage(
+                                      itemID: itemID,
                                     )),
                           );
                         },
@@ -67,7 +66,7 @@ class TableView extends StatelessWidget {
                     (states) => Colors.grey.shade200),
                 columns: const [
                   DataColumn(label: Text("ID")),
-                  DataColumn(label: Text("Type")),
+                  DataColumn(label: Text("Category")),
                   DataColumn(label: Text("Status")),
                   DataColumn(label: Text("Seller Email")),
                   DataColumn(label: Text("")),

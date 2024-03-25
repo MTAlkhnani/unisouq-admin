@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../Components/users_table_view.dart';
@@ -15,9 +17,38 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // updateUserEmailInItems();
+  }
+
+  Future<void> updateUserEmailInItems() async {
+    print('Starting to update data...');
+    final userCollection = FirebaseFirestore.instance.collection('User');
+    final itemCollection = FirebaseFirestore.instance.collection('Item');
+
+    // Retrieve all users
+    final userSnapshot = await userCollection.get();
+    for (var userDoc in userSnapshot.docs) {
+      final userId =
+          userDoc.id; // Assuming the document ID is used as the user ID
+      final userEmail = userDoc.get('Email');
+
+      // Query items related to this user
+      final itemsSnapshot =
+          await itemCollection.where('sellerID', isEqualTo: userId).get();
+
+      // Update each item with the user's email
+      for (var itemDoc in itemsSnapshot.docs) {
+        await itemCollection.doc(itemDoc.id).update({'user': userEmail});
+      }
+    }
+    print('Done');
+  }
+
   //setting the expansion function for the navigation rail
   bool isExpanded = false;
-
   Stream<QuerySnapshot<Object?>>? getStreamAllItems() {
     return FirebaseFirestore.instance.collection('Item').snapshots();
   }
@@ -142,16 +173,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
 
       //let's add the floating action button
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromRGBO(0, 0, 139, 1),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreatePackage()),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: const Color.fromRGBO(0, 0, 139, 1),
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(builder: (context) => CreatePackage()),
+      //     );
+      //   },
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 }

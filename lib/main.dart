@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       routes: {
         ReportScreen.route: (context) => const ReportScreen(),
         LogInPage.route: (context) => const LogInPage(),
-        CreatePackage.route: (context) => CreatePackage(),
+        // CreatePackage.route: (context) => CreatePackage(),
       },
     );
   }
