@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '/Components/payment_table_view.dart';
-import '../Components/packages_av_card.dart';
+import '../Components/users_table_view.dart';
+import '../Components/items_av_card.dart';
 import '../Components/table_view.dart';
 import 'create_page.dart';
 import 'login_page.dart';
@@ -18,17 +18,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   //setting the expansion function for the navigation rail
   bool isExpanded = false;
 
-  Stream<QuerySnapshot<Object?>>? getStreamAllPackages() {
-    return FirebaseFirestore.instance
-        .collection('packages')
-        .orderBy('PackageID', descending: false)
-        .snapshots();
+  Stream<QuerySnapshot<Object?>>? getStreamAllItems() {
+    return FirebaseFirestore.instance.collection('Item').snapshots();
   }
 
-  Stream<QuerySnapshot<Object?>>? getStreamAllPayments() {
+  Stream<QuerySnapshot<Object?>>? getStreamAllUsers() {
     return FirebaseFirestore.instance
-        .collection('Payments')
-        .orderBy('PaymentID', descending: false)
+        .collection('User')
+        // .orderBy('PaymentID', descending: false)
         .snapshots();
   }
 
@@ -97,7 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       height: 20.0,
                     ),
                     //Now let's start with the dashboard main
-                    const PackagesAvCard(),
+                    const ItemsAvCard(),
                     const SizedBox(
                       height: 40.0,
                     ),
@@ -105,7 +102,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       margin: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 0),
                       child: const Text(
-                        "Packages",
+                        "Items",
                         style: TextStyle(
                             fontSize: 20,
                             color: Color.fromRGBO(0, 0, 139, 1),
@@ -115,7 +112,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    TableView(stream: getStreamAllPackages()),
+                    TableView(stream: getStreamAllItems()),
                     // TableView(
                     //     stream:
                     //         getPackagesOfParticularCustomer("test@test.com")),
@@ -125,7 +122,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       margin: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 0),
                       child: const Text(
-                        "Payments",
+                        "Users",
                         style: TextStyle(
                             fontSize: 20,
                             color: Color.fromRGBO(0, 0, 139, 1),
@@ -135,7 +132,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    PaymentWidget(stream: getStreamAllPayments()),
+                    UserWidget(stream: getStreamAllUsers()),
                   ],
                 ),
               ),

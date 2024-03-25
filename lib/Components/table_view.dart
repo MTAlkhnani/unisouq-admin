@@ -14,36 +14,34 @@ class TableView extends StatelessWidget {
         StreamBuilder<QuerySnapshot>(
             stream: stream,
             builder: ((context, snapshot) {
-              List<DataRow> packageWidgets = [];
+              List<DataRow> itemWidgets = [];
               if (snapshot.hasData) {
-                final packages = snapshot.data!.docs;
-                for (var package in packages) {
-                  final packageID = package.get('PackageID');
-                  final type = package.get('Type');
-                  final status = package.get('Status');
-                  final fdd = package.get('FDD');
-                  Color statusColor = Colors.black;
-                  if (status.toString().toLowerCase() == 'received') {
-                    statusColor = const Color.fromRGBO(0, 100, 0, 1);
-                  } else if (status.toString().toLowerCase() == 'intransit') {
-                    statusColor = Colors.blue;
-                  } else if (status.toString().toLowerCase() == 'delayed') {
-                    statusColor = Colors.orange;
-                  } else if (status.toString().toLowerCase() == 'lost') {
-                    statusColor = Colors.red;
-                  } else if (status.toString().toLowerCase() == 'processing') {
-                    statusColor = Colors.green;
-                  } else if (status.toString().toLowerCase() == 'delivered') {
-                    statusColor = Colors.green;
-                  }
+                final items = snapshot.data!.docs;
+                for (var item in items) {
+                  final sellerID = item.get('sellerID');
+                  final itemID = item.get('itemID');
+                  final category = item.get('category');
+                  final status = item.get('status');
+                  final user = item.get('user');
+                  final itemName = item.get('title');
+                  final price = item.get('price');
+
+                  /*
+                  other data for the item as well
+                  */
+
+                  final condition = item.get('condition');
+                  // final desc = item.get('description');
+                  // final discPrice = item.get('discountedPrice');
+                  // final imageUrls = item.get('imageURLs');
+
                   final packageWidget = DataRow(cells: [
-                    DataCell(Text(packageID.toString())),
-                    DataCell(Text(type)),
-                    DataCell(Text(
-                      status,
-                      style: TextStyle(color: statusColor),
-                    )),
-                    DataCell(Text(fdd)),
+                    DataCell(Text(sellerID.toString())),
+                    DataCell(Text(condition)),
+                    DataCell(Text(status
+                        // style: TextStyle(color: statusColor),
+                        )),
+                    DataCell(Text(user)),
                     DataCell(
                       TextButton(
                         child: const Text("Show Details"),
@@ -52,7 +50,7 @@ class TableView extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => PackagePage(
-                                      packageID: packageID,
+                                      packageID: itemID,
                                       status: status,
                                     )),
                           );
@@ -60,10 +58,10 @@ class TableView extends StatelessWidget {
                       ),
                     ),
                   ]);
-                  packageWidgets.add(packageWidget);
+                  itemWidgets.add(packageWidget);
                 }
               }
-              packageWidgets;
+              itemWidgets;
               return DataTable(
                 headingRowColor: MaterialStateProperty.resolveWith(
                     (states) => Colors.grey.shade200),
@@ -71,13 +69,12 @@ class TableView extends StatelessWidget {
                   DataColumn(label: Text("ID")),
                   DataColumn(label: Text("Type")),
                   DataColumn(label: Text("Status")),
-                  DataColumn(label: Text("Final Destination")),
+                  DataColumn(label: Text("Seller Email")),
                   DataColumn(label: Text("")),
                 ],
-                rows: packageWidgets,
+                rows: itemWidgets,
               );
             })),
-        //Now let's set the pagination
         const SizedBox(
           height: 40.0,
         ),

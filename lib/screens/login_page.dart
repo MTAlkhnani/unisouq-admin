@@ -114,9 +114,9 @@ class _LogInPageState extends State<LogInPage> {
                         InkWell(
                           onTap: () async {
                             String empString =
-                                email.split('@')[1].substring(0, 4);
+                                email.split('@')[1].substring(0, 7);
                             try {
-                              if (empString.toLowerCase() == 'wpms') {
+                              if (empString.toLowerCase() == 'unisouq') {
                                 final newUser =
                                     await _auth.signInWithEmailAndPassword(
                                         email: email, password: password);

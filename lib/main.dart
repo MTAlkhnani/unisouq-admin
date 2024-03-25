@@ -14,12 +14,12 @@ void main() async {
   await Firebase.initializeApp(
       options: const FirebaseOptions(
     apiKey: "AIzaSyCz7XWBdkHsqqkTiOVZMISQ0antQrM-8WE",
-    // authDomain: "uni-souq.firebaseapp.com",
+    authDomain: "uni-souq.firebaseapp.com",
     projectId: "uni-souq",
-    // storageBucket: "uni-souq.appspot.com",
+    storageBucket: "uni-souq.appspot.com",
     messagingSenderId: "1091791953567",
     appId: "1:1091791953567:web:963d4240c1e2a20cc94caa",
-    // measurementId: "G-84R8B45G72",
+    measurementId: "G-84R8B45G72",
   ));
   runApp(const MyApp());
 }
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const LogInPage(),
+      home: const DashboardScreen(), //change this LogInPage() later
       routes: {
         ReportScreen.route: (context) => const ReportScreen(),
         LogInPage.route: (context) => const LogInPage(),

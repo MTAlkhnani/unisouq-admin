@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'payment_table_view.dart';
+import 'users_table_view.dart';
 
 class PaymentsStatusReport extends StatefulWidget {
   const PaymentsStatusReport({super.key});
@@ -69,7 +69,7 @@ class _PaymentsStatusReportState extends State<PaymentsStatusReport> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    PaymentWidget(stream: getStreamCompletedPayments()),
+                    UserWidget(stream: getStreamCompletedPayments()),
                     const Divider(),
                     Container(
                       margin: const EdgeInsets.symmetric(
@@ -82,7 +82,7 @@ class _PaymentsStatusReportState extends State<PaymentsStatusReport> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    PaymentWidget(stream: getStreamInCompletedPayments()),
+                    UserWidget(stream: getStreamInCompletedPayments()),
                   ],
                 ),
               ),
