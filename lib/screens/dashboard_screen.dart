@@ -1,13 +1,15 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:unisouq_admin/Components/pie_chart_client.dart';
+
+import '../Components/pie_chart.dart';
 import '../Components/users_table_view.dart';
 import '../Components/items_av_card.dart';
 import '../Components/table_view.dart';
 import 'create_page.dart';
 import 'login_page.dart';
 import 'report_screen.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -60,6 +62,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         .snapshots();
   }
 
+  Stream<QuerySnapshot<Object?>>? getStreamAllClients() {
+    return FirebaseFirestore.instance
+        .collection('responses')
+        // .orderBy('PaymentID', descending: false)
+        .snapshots();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,6 +107,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Navigator.of(context)
                       .pushReplacementNamed(ReportScreen.route);
                 }
+                if (value == 2) {
+                  Navigator.of(context)
+                      .pushReplacementNamed(ReportScreen.route);
+                }
+
                 if (value == 3) {
                   Navigator.of(context).pushReplacementNamed(LogInPage.route);
                 }
@@ -112,6 +126,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //let's add the navigation menu for this project
+
                     IconButton(
                       onPressed: () {
                         //let's trigger the navigation expansion
@@ -124,11 +139,49 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     const SizedBox(
                       height: 20.0,
                     ),
+
                     //Now let's start with the dashboard main
                     const ItemsAvCard(),
-                    const SizedBox(
-                      height: 40.0,
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TopSellerPieChart(
+                                stream: getStreamAllItems(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TopClientPieChart(
+                                stream: getStreamAllClients(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 400,
+
+                                // Your widget content here
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 20),
                     Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 0),
@@ -144,10 +197,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       height: 10.0,
                     ),
                     TableView(stream: getStreamAllItems()),
-                    // TableView(
-                    //     stream:
-                    //         getPackagesOfParticularCustomer("test@test.com")),
-
                     const Divider(),
                     Container(
                       margin: const EdgeInsets.symmetric(
@@ -171,18 +220,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-
-      //let's add the floating action button
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: const Color.fromRGBO(0, 0, 139, 1),
-      //   onPressed: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(builder: (context) => CreatePackage()),
-      //     );
-      //   },
-      //   child: const Icon(Icons.add),
-      // ),
     );
   }
 }
