@@ -17,9 +17,8 @@ class _PackagesByCustomerState extends State<PackagesByCustomer> {
   Stream<QuerySnapshot<Object?>>? getPackagesOfParticularCustomer(
       String email) {
     return FirebaseFirestore.instance
-        .collection('packages')
-        .where('CustomerEmail', isEqualTo: email)
-        .orderBy('PackageID', descending: false)
+        .collection('Item')
+        .where('user', isEqualTo: email)
         .snapshots();
   }
 
@@ -33,8 +32,7 @@ class _PackagesByCustomerState extends State<PackagesByCustomer> {
           children: [
             Row(
               children: [
-                const Text(
-                    "List all packages information by a particular customer"),
+                const Text("List all items for a particular user"),
                 const Spacer(),
                 IconButton(
                     onPressed: () {
@@ -75,7 +73,7 @@ class _PackagesByCustomerState extends State<PackagesByCustomer> {
                       margin: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 0),
                       child: const Text(
-                        "Packages",
+                        "Items",
                         style: TextStyle(
                             fontSize: 20,
                             color: Color.fromRGBO(0, 0, 139, 1),
