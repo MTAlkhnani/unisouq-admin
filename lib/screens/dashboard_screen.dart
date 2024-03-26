@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:unisouq_admin/Components/order_Stute.dart';
 import 'package:unisouq_admin/Components/pie_chart_client.dart';
 
 import '../Components/pie_chart.dart';
@@ -173,6 +174,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
                                 height: 400,
+                                child: OrdersStatusCard(),
 
                                 // Your widget content here
                               ),
