@@ -36,7 +36,7 @@ class _LogInPageState extends State<LogInPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: Text(
-                        'WPMS Log In',
+                        'Uni-Souq Admin Log In',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 40,
