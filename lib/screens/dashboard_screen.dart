@@ -108,10 +108,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Navigator.of(context)
                       .pushReplacementNamed(ReportScreen.route);
                 }
-                if (value == 2) {
-                  Navigator.of(context)
-                      .pushReplacementNamed(ReportScreen.route);
-                }
+                if (value == 2) {}
 
                 if (value == 3) {
                   Navigator.of(context).pushReplacementNamed(LogInPage.route);
