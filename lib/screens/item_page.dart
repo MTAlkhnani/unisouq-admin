@@ -18,112 +18,49 @@ class ItemPage extends StatelessWidget {
   }
   final _locatedAtController = TextEditingController();
   Future openDialog(BuildContext context) => showDialog(
-        context: context,
-        builder: ((context) => AlertDialog(
-              title: const Text('Edit the package'),
-              content: TextField(
-                decoration: const InputDecoration(
-                    hintText: 'Enter where the package will be delivered next'),
-                controller: _locatedAtController,
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () async {
-                    await FirebaseFirestore.instance
-                        .collection('Item')
-                        .where('itemID', isEqualTo: itemID)
-                        .get()
-                        .then((value) {
-                      if (value.docs.isNotEmpty) {
-                        // final newLocationAt =
-                        //     value.docs.first.get('Destination');
-                        // final id = value.docs.first.id;
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Confirm Deletion'),
+      content: const Text('Are you sure you want to delete?'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            // This button is for the Cancel option. Just close the dialog.
+            Navigator.of(context).pop(); // Close the confirmation dialog
+          },
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () async {
+            // Place your deletion logic here
+            await FirebaseFirestore.instance
+                .collection('Item')
+                .where('itemID', isEqualTo: itemID)
+                .get()
+                .then((value) {
+              if (value.docs.isNotEmpty) {
+                final id = value.docs.first.id;
+                FirebaseFirestore.instance
+                    .collection('Item')
+                    .doc(id)
+                    .delete();
+                // Additional deletion logic can be added here
+              }
+            });
 
-                        // _firestore.collection('packages').doc(id).update({
-                        //   'LocatedAt': newLocationAt,
-                        //   'Destination': _locatedAtController.text.trim()
-                        // });
+            // Once the deletion is done, close the dialog
+            Navigator.pop(context); // Close the confirmation dialog
+            Navigator.pop(context); // Optionally close the previous screen if needed
+          },
+          child: const Text(
+            'Delete',
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      ],
+    ),
+  );
 
-                        // _firestore
-                        //     .collection('Location History')
-                        //     .where('PackageID', isEqualTo: packageID)
-                        //     .where('Status', isEqualTo: "In")
-                        //     .get()
-                        //     .then((history) {
-                        //   _firestore
-                        //       .collection('Location History')
-                        //       .doc(history.docs.first.id)
-                        //       .update({
-                        //     'Status': "Out",
-                        //   });
-                        //   _firestore.collection('Location History').add({
-                        //     'PackageID': packageID,
-                        //     'Location': newLocationAt,
-                        //     'LocatedNumber':
-                        //         history.docs.first.get('LocatedNumber') + 1,
-                        //     'Status': 'In',
-                        //   });
-                        // });
-
-                        //.update({}).;
-                      }
-                    });
-
-                    _locatedAtController.clear();
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Submit'),
-                ),
-                TextButton(
-                    onPressed: () async {
-                      await _firestore
-                          .collection('Item')
-                          .where('itemID', isEqualTo: itemID)
-                          .get()
-                          .then((value) {
-                        if (value.docs.isNotEmpty) {
-                          final id = value.docs.first.id;
-                          FirebaseFirestore.instance
-                              .collection('Item')
-                              .doc(id)
-                              .delete();
-
-                          // _firestore
-                          //     .collection('Location History')
-                          //     .where('PackageID', isEqualTo: packageID)
-                          //     .get()
-                          //     .then((history) {
-                          //   history.docs.forEach((element) {
-                          //     element.reference.delete();
-                          //   });
-                          // });
-
-                          // FirebaseFirestore.instance
-                          //     .collection("Payments")
-                          //     .where('PackageID', isEqualTo: packageID)
-                          //     .where('Status', isEqualTo: 'Incompleted')
-                          //     .get()
-                          //     .then((payments) {
-                          //   if (payments.docs.isNotEmpty) {
-                          //     FirebaseFirestore.instance
-                          //         .collection("Payments")
-                          //         .doc(payments.docs.first.id)
-                          //         .delete();
-                          //   }
-                          // });
-                        }
-                      });
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      _locatedAtController.clear();
-                    },
-                    child: const Text(
-                      'Delete',
-                      style: TextStyle(color: Colors.red),
-                    ))
-              ],
-            )),
-      );
   // Future sendEmail({
   //   required String name,
   //   required String email,
