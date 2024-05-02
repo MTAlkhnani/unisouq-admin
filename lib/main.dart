@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
-import 'screens/create_page.dart';
+// import 'screens/create_page.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/login_page.dart';
 import 'screens/report_screen.dart';
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const DashboardScreen(), //change this LogInPage() later
+      home: const LogInPage(), //change this LogInPage() later
       routes: {
         ReportScreen.route: (context) => const ReportScreen(),
         LogInPage.route: (context) => const LogInPage(),

@@ -7,7 +7,7 @@ import '../Components/pie_chart.dart';
 import '../Components/users_table_view.dart';
 import '../Components/items_av_card.dart';
 import '../Components/table_view.dart';
-import 'create_page.dart';
+// import 'create_page.dart';
 import 'login_page.dart';
 import 'report_screen.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -78,7 +78,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           //Let's start by adding the Navigation Rail
           NavigationRail(
               extended: isExpanded,
-              backgroundColor: const Color.fromRGBO(0, 0, 139, 1),
+              backgroundColor: const Color.fromRGBO(142, 108, 239, 1),
               unselectedIconTheme:
                   const IconThemeData(color: Colors.white, opacity: 1),
               unselectedLabelTextStyle: const TextStyle(
@@ -94,14 +94,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   icon: Icon(Icons.bar_chart),
                   label: Text("Reports"),
                 ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.person),
-                  label: Text("Profile"),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.settings),
-                  label: Text("Log out"),
-                ),
+                // NavigationRailDestination(
+                //   icon: Icon(Icons.settings),
+                //   label: Text("Log out"),
+                // ),
               ],
               onDestinationSelected: (value) {
                 if (value == 1) {
@@ -110,9 +106,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 }
                 if (value == 2) {}
 
-                if (value == 3) {
-                  Navigator.of(context).pushReplacementNamed(LogInPage.route);
-                }
+                // if (value == 3) {
+                //   Navigator.of(context).pushReplacementNamed(LogInPage.route);
+                // }
               },
               selectedIndex: 0),
           Expanded(

@@ -67,7 +67,7 @@ class _ReportScreenState extends State<ReportScreen> {
           //Let's start by adding the Navigation Rail
           NavigationRail(
               extended: isExpanded,
-              backgroundColor: const Color.fromRGBO(0, 0, 139, 1),
+              backgroundColor: const Color.fromRGBO(142, 108, 239, 1),
               unselectedIconTheme:
                   const IconThemeData(color: Colors.white, opacity: 1),
               unselectedLabelTextStyle: const TextStyle(
@@ -82,14 +82,6 @@ class _ReportScreenState extends State<ReportScreen> {
                 NavigationRailDestination(
                   icon: Icon(Icons.bar_chart),
                   label: Text("Reports"),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.person),
-                  label: Text("Profile"),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.settings),
-                  label: Text("Log out"),
                 ),
               ],
               onDestinationSelected: (value) {
